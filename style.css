@@ -111,8 +111,14 @@ body {
 }
 
 
-.slideOut {
-    transform: rotateX(60deg) translateY(-10px);
-    opacity: 0;
-    transition: 1s;
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: rotateX(0deg) translateY(0px);
+    }
+
+    to {
+        opacity: 0;
+        transform: rotateX(60deg) translateY(-10px);
+    }
 }

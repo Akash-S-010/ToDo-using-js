@@ -36,7 +36,7 @@ const addTask = () => {
 
         // Add an event listener to the delete button
         deleteBtn.addEventListener('click', () => {
-            li.style.animation = "slideOut 0.5s ease-in-out";
+            li.style.animation = "slideOut 0.5s ease-in-out"
             li.addEventListener("animationend", () => {
                 li.remove()
                 // when removing a list it also removed from the array

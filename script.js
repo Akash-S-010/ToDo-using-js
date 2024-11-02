@@ -3,7 +3,7 @@ let addBtn = document.querySelector("#addBtn")
 let ul = document.querySelector("#ul")
 let thoughtArray = []
 
-addBtn.addEventListener("click", () => {
+const addTask = () => {
     let inputValue = inputBox.value
 
     if (inputValue == "") {
@@ -21,7 +21,7 @@ addBtn.addEventListener("click", () => {
         li.style.animation = "slideIn 0.3s ease-in-out"
 
 
-        inputBox.value = ""  // Clear the input field
+        inputBox.value = ""  
         inputBox.focus()     // Set focus back to the input field for easy typing
 
 
@@ -59,5 +59,12 @@ addBtn.addEventListener("click", () => {
             }
         });
         
+    }
+}
+addBtn.addEventListener('click',addTask)
+
+inputBox.addEventListener('keydown',(e) => {
+    if(e.key === "Enter"){
+        addTask()
     }
 })

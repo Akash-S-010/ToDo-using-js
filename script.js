@@ -1,35 +1,27 @@
 let inputBox = document.querySelector("#inputBox")
 let addBtn = document.querySelector("#addBtn")
 let ul = document.querySelector("#ul")
-let thoughtArray = []
+let valueArray = []
 let inputValue = inputBox.value
 
-
 function setLocalStorage(){
-    localStorage.setItem("lists",inputValue)
+    localStorage.setItem("task",inputValue)
 }
+
 function getLocalStorage(){
-    inputValue = localStorage.getItem("lists")
+   if( inputValue = localStorage.getItem("task")){
+    builtTask()
+   }
 }
 
-
-
-const addTask = () => {
-    setLocalStorage()
-    getLocalStorage()
-
-
-    if (inputValue == "") {
-        alert("List Cannot be empty")
-
-    } else {
-        let li = document.createElement("li")
+function builtTask(){
+    let li = document.createElement("li")
         li.innerHTML = inputValue
         ul.appendChild(li)
 
         // created an array for store inputValues
-        thoughtArray.push(inputValue)
-        console.log(thoughtArray)
+        valueArray.push(inputValue)
+        console.log(valueArray)
 
         li.style.animation = "slideIn 0.3s ease-in-out"
 
@@ -53,8 +45,8 @@ const addTask = () => {
             li.addEventListener("animationend", () => {
                 li.remove()
                 // when removing a list it also removed from the array
-                thoughtArray = thoughtArray.filter(item => item !== inputValue)
-                console.log(thoughtArray);
+                valueArray = valueArray.filter(item => item !== inputValue)
+                console.log(valueArray);
             })
         })
 
@@ -64,16 +56,27 @@ const addTask = () => {
             if (editValue !== null && editValue.trim() !== "") { 
                 li.firstChild.nodeValue = editValue
                 // Updated the value also from the thought array
-                const currentIndex = thoughtArray.indexOf(inputValue)
+                const currentIndex = valueArray.indexOf(inputValue)
                 if (currentIndex !== -1) {
-                    thoughtArray[currentIndex] = editValue;
+                    valueArray[currentIndex] = editValue;
                 }
-                console.log(thoughtArray);
+                console.log(valueArray);
             }
         });
+    }
+const addTask = () => {
+    inputValue = inputBox.value
+    if(inputValue == ""){
+        alert("please enter Task")
+    }
+
+    setLocalStorage()
+    getLocalStorage()
+
+        
         
     }
-}
+
 addBtn.addEventListener('click',addTask)
 
 inputBox.addEventListener('keydown',(e) => {
@@ -81,3 +84,5 @@ inputBox.addEventListener('keydown',(e) => {
         addTask()
     }
 })
+
+getLocalStorage()

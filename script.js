@@ -2,9 +2,22 @@ let inputBox = document.querySelector("#inputBox")
 let addBtn = document.querySelector("#addBtn")
 let ul = document.querySelector("#ul")
 let thoughtArray = []
+let inputValue = inputBox.value
+
+
+function setLocalStorage(){
+    localStorage.setItem("lists",inputValue)
+}
+function getLocalStorage(){
+    inputValue = localStorage.getItem("lists")
+}
+
+
 
 const addTask = () => {
-    let inputValue = inputBox.value
+    setLocalStorage()
+    getLocalStorage()
+
 
     if (inputValue == "") {
         alert("List Cannot be empty")

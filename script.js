@@ -1,34 +1,30 @@
 let inputBox = document.querySelector("#inputBox")
 let addBtn = document.querySelector("#addBtn")
 let ul = document.querySelector("#ul")
-let valueArray = []
-let inputValue = inputBox.value
+let inpValueArr = []
 
+// --------Local Storage------------
 function setLocalStorage(){
-    localStorage.setItem("task",inputValue)
+    localStorage.setItem("task", JSON.stringify(inpValueArr))
 }
 
 function getLocalStorage(){
-   if( inputValue = localStorage.getItem("task")){
-    builtTask()
-   }
+    const storedTasks = JSON.parse(localStorage.getItem("task"))
+    if (storedTasks) {
+        inpValueArr = storedTasks
+        builtTask()
+    }
 }
 
+// Builds the task from the array
 function builtTask(){
-    let li = document.createElement("li")
-        li.innerHTML = inputValue
+    ul.innerHTML = "" 
+    inpValueArr.forEach((item) => {
+        let li = document.createElement("li")
+        li.innerHTML = item
         ul.appendChild(li)
-
-        // created an array for store inputValues
-        valueArray.push(inputValue)
-        console.log(valueArray)
-
+        
         li.style.animation = "slideIn 0.3s ease-in-out"
-
-
-        inputBox.value = ""  
-        inputBox.focus()     // Set focus back to the input field for easy typing
-
 
         let deleteBtn = document.createElement('i')
         deleteBtn.classList.add("fa-solid", "fa-trash")
@@ -38,51 +34,55 @@ function builtTask(){
         editBtn.classList.add("fa-solid", "fa-pen-to-square")
         li.appendChild(editBtn)
 
-
-        // Add an event listener to the delete button
+        // Delete button when clicked 
         deleteBtn.addEventListener('click', () => {
             li.style.animation = "slideOut 0.5s ease-in-out"
             li.addEventListener("animationend", () => {
                 li.remove()
-                // when removing a list it also removed from the array
-                valueArray = valueArray.filter(item => item !== inputValue)
-                console.log(valueArray);
+                inpValueArr = inpValueArr.filter(task => task !== item) // Remove the task from array
+                setLocalStorage() // Update localStorage after deletion
+                console.log(inpValueArr)
             })
         })
 
-        // Add an event listener to the edit button
+        // Edit button when clicked 
         editBtn.addEventListener("click", () => {
-            let editValue = prompt("Please change The Thought")
-            if (editValue !== null && editValue.trim() !== "") { 
+            let editValue = prompt("Please change The Thought", item)
+            if (editValue !== null && editValue.trim() !== "") {
                 li.firstChild.nodeValue = editValue
-                // Updated the value also from the thought array
-                const currentIndex = valueArray.indexOf(inputValue)
+                const currentIndex = inpValueArr.indexOf(item)
                 if (currentIndex !== -1) {
-                    valueArray[currentIndex] = editValue;
+                    inpValueArr[currentIndex] = editValue
+                    setLocalStorage() // Update localStorage after edit
                 }
-                console.log(valueArray);
+                console.log(inpValueArr)
             }
-        });
-    }
+        })
+    })
+}
+
+// Main function to add task
 const addTask = () => {
-    inputValue = inputBox.value
-    if(inputValue == ""){
-        alert("please enter Task")
+    let inputValue = inputBox.value.trim() 
+
+    if (inputValue === "") {
+        alert("Please enter a task")
+    } else {
+        inpValueArr.push(inputValue) // Add task to array
+        setLocalStorage() // Save updated array to localStorage
+        builtTask() // Refresh UI
+        inputBox.value = ""  
+        inputBox.focus() // Set focus back to the input field
     }
+}
 
-    setLocalStorage()
-    getLocalStorage()
+// Load tasks from local storage
+getLocalStorage()
 
-        
-        
-    }
+addBtn.addEventListener('click', addTask)
 
-addBtn.addEventListener('click',addTask)
-
-inputBox.addEventListener('keydown',(e) => {
-    if(e.key === "Enter"){
+inputBox.addEventListener('keydown', (e) => {
+    if (e.key === "Enter") {
         addTask()
     }
 })
-
-getLocalStorage()

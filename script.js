@@ -47,7 +47,7 @@ function builtTask(){
 
         // Edit button when clicked 
         editBtn.addEventListener("click", () => {
-            let editValue = prompt("Please change The Thought", item)
+            let editValue = prompt("Please change The Task", item)
             if (editValue !== null && editValue.trim() !== "") {
                 li.firstChild.nodeValue = editValue
                 const currentIndex = inpValueArr.indexOf(item)
